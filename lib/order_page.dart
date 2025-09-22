@@ -50,7 +50,7 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detail Pesanan"),
-        backgroundColor: const Color.fromARGB(255, 250, 247, 246),
+        backgroundColor: const Color.fromARGB(255, 127, 76, 59),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -68,7 +68,7 @@ class _OrderPageState extends State<OrderPage> {
                     style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.brown)),
+                        color: Color.fromARGB(255, 222, 222, 222))),
                 const SizedBox(height: 8),
                 Text(widget.produk.desc,
                     style: const TextStyle(fontSize: 16)),
