@@ -50,7 +50,7 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detail Pesanan"),
-        backgroundColor: Colors.brown,
+        backgroundColor: const Color.fromARGB(255, 250, 247, 246),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
