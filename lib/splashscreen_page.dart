@@ -44,10 +44,11 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 10),
             const Text(
-              "Your daily dose of happiness ☕",
+              "Your daily dose of happiness ☕"
+              "By : Alfina Berlian Yudianti - 24111814016",
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey,
+                color: Color.fromARGB(255, 223, 50, 50),
               ),
             ),
             const SizedBox(height: 30),
