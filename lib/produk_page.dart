@@ -3,6 +3,11 @@ import '/model/produk.dart';
 import '/model/minumanspesial.dart';
 import '/model/user.dart';
 import '/order_page.dart';
+import 'data/keranjang_data.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
+import 'providers/cart_provider.dart';
+
 
 class ProdukPage extends StatefulWidget {
   const ProdukPage({super.key});
@@ -14,7 +19,8 @@ class ProdukPage extends StatefulWidget {
 class _ProdukPageState extends State<ProdukPage> {
   // Contoh user/customer
   final Customer customer = Customer("Budi", "budi@email.com", "Jl. Mawar No. 1");
-  final List<Produk> keranjang = [];
+  
+
 
   // List produk dan minuman spesial
   final List<Produk> menuList = [
@@ -86,17 +92,18 @@ class _ProdukPageState extends State<ProdukPage> {
             onPressed: () => Navigator.pop(context),
           ),
           ElevatedButton(
-            child: const Text("Tambah ke Keranjang"),
             onPressed: () {
-              setState(() {
-                keranjang.add(menu);
-              });
+              final cartProvider = Provider.of<CartProvider>(context, listen: false);
+              cartProvider.addToCart(menu);
+  
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("${menu.name} ditambahkan ke keranjang!"))
-              );
-            },
-          ),
+                SnackBar(content: Text("${menu.name} ditambahkan ke keranjang!")),
+  );
+},
+  child: const Text('Tambah ke Keranjang'),
+)
+
         ],
       ),
     );
@@ -109,11 +116,12 @@ class _ProdukPageState extends State<ProdukPage> {
         title: const Text("Keranjang Belanja"),
         content: SizedBox(
           width: double.maxFinite,
-          child: keranjang.isEmpty
+          child: keranjangGlobal.isEmpty
+
               ? const Text("Keranjang kosong.")
               : ListView(
                   shrinkWrap: true,
-                  children: keranjang.map((p) => ListTile(
+                  children: keranjangGlobal.map((p) => ListTile(
                     title: Text(p.name),
                     subtitle: Text(p.desc),
                     trailing: Text(p.price),
@@ -136,13 +144,28 @@ class _ProdukPageState extends State<ProdukPage> {
       appBar: AppBar(
         title: const Text("Menu Cherry Coffee"),
         backgroundColor: Colors.brown,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () => _showKeranjang(context),
-            tooltip: "Lihat Keranjang",
-          ),
-        ],
+       actions: [
+  Consumer<CartProvider>(
+    builder: (context, cart, child) {
+      return badges.Badge(
+        position: badges.BadgePosition.topEnd(top: 2, end: 4),
+        badgeContent: Text(
+          cart.items.length.toString(),
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+        ),
+        showBadge: cart.items.isNotEmpty,
+        child: IconButton(
+          icon: const Icon(Icons.shopping_cart),
+          tooltip: "Lihat Keranjang",
+          onPressed: () {
+            Navigator.pushNamed(context, '/cart');
+          },
+        ),
+      );
+    },
+  ),
+],
+
       ),
       backgroundColor: Colors.brown[50],
       body: ListView.builder(

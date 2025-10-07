@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/cart_provider.dart';
+import 'cart_page.dart';
 import 'homescreen_page.dart';
 import 'splashscreen_page.dart';
 import 'login_page.dart';
 import 'register_page.dart';
 import 'dashboard_page.dart';
 import 'produk_page.dart';
-import 'order_page.dart'; // Halaman detail produk (dengan tombol beli / keranjang)
-  // Halaman keranjang baru
+import 'pembayaran_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,9 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Cherry Coffee',
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
+      theme: ThemeData(primarySwatch: Colors.brown),
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => const SplashScreen(),
@@ -31,9 +38,8 @@ class MyApp extends StatelessWidget {
         '/homescreen': (context) => const HomeScreen(),
         '/dashboard': (context) => const DashboardPage(),
         '/produk': (context) => ProdukPage(),
-        '/order': (context) => const Placeholder(), // nanti diganti jadi halaman order dinamis
-        '/promo': (context) => const Placeholder(),
-        '/about': (context) => const Placeholder(),
+        '/cart': (context) => const CartPage(),
+        '/pembayaran': (context) => const PembayaranPage(),
       },
     );
   }
