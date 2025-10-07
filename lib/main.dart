@@ -4,7 +4,9 @@ import 'splashscreen_page.dart';
 import 'login_page.dart';
 import 'register_page.dart';
 import 'dashboard_page.dart';
-import 'produk_page.dart'; // Pastikan ini diimpor
+import 'produk_page.dart';
+import 'order_page.dart'; // Halaman detail produk (dengan tombol beli / keranjang)
+  // Halaman keranjang baru
 
 void main() {
   runApp(const MyApp());
@@ -19,16 +21,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cherry Coffee',
       theme: ThemeData(
-        primarySwatch: Colors.brown
+        primarySwatch: Colors.brown,
       ),
-      initialRoute: '/splash', // Ubah ke splash
+      initialRoute: '/splash',
       routes: {
-        '/splash': (context) => const SplashScreen(), // Tambahkan ini
+        '/splash': (context) => const SplashScreen(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/homescreen': (context) => const HomeScreen(),
         '/dashboard': (context) => const DashboardPage(),
-        '/produk': (context) => ProdukPage(), // Pastikan ini ada
+        '/produk': (context) => ProdukPage(),
+        '/order': (context) => const Placeholder(), // nanti diganti jadi halaman order dinamis
         '/promo': (context) => const Placeholder(),
         '/about': (context) => const Placeholder(),
       },
