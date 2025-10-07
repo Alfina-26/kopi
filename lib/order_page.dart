@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'model/user.dart';
 import 'model/produk.dart';
-
-// -------------------------
-// List keranjang sementara (global)
-// -------------------------
-List<Produk> keranjang = [];
+import 'keranjang_page.dart'; // import halaman keranjang
 
 class Order {
   Customer customer;
@@ -14,7 +10,7 @@ class Order {
 
   Order(this.customer, this.items, this.date);
 
-  // Getter untuk total harga
+  // Hitung total harga
   int get totalPrice {
     return items.fold(0, (sum, item) {
       final angka = int.tryParse(item.price.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
@@ -46,25 +42,28 @@ class _OrderPageState extends State<OrderPage> {
     orderDate = DateTime.now();
   }
 
+  // Fungsi untuk beli langsung
   void _beliSekarang() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Pesanan berhasil dikonfirmasi!")),
+      const SnackBar(content: Text("Pesanan berhasil dikonfirmasi! ☕")),
     );
   }
 
+  // Fungsi tambah produk ke keranjang
   void _tambahKeKeranjang() {
     setState(() {
       keranjang.add(widget.produk);
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("${widget.produk.name} ditambahkan ke keranjang!")),
+      SnackBar(content: Text("${widget.produk.name} ditambahkan ke keranjang 🛒")),
     );
   }
 
+  // Fungsi buka halaman keranjang
   void _bukaKeranjang() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => KeranjangPage()),
+      MaterialPageRoute(builder: (context) => const KeranjangPage()),
     );
   }
 
@@ -95,23 +94,29 @@ class _OrderPageState extends State<OrderPage> {
               children: [
                 Icon(widget.produk.icon, size: 60, color: Colors.brown),
                 const SizedBox(height: 16),
-                Text(widget.produk.name,
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 222, 222, 222))),
+                Text(
+                  widget.produk.name,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 222, 222, 222),
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(widget.produk.desc, style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 16),
-                Text("Harga: ${widget.produk.price}",
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.brown)),
+                Text(
+                  "Harga: ${widget.produk.price}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown,
+                  ),
+                ),
                 const Divider(height: 32),
-                Text("Pemesan: Alfina Berlian"),
-                Text("Email: Berlian@gmail.com"),
-                Text("Alamat: Jl. Uhuy 29"),
+                Text("Pemesan: ${widget.customer.name}"),
+                Text("Email: ${widget.customer.email}"),
+                Text("Alamat: ${widget.customer.address}"),
                 const SizedBox(height: 16),
                 Text(
                   "Tanggal: ${orderDate.day}-${orderDate.month}-${orderDate.year}",
@@ -119,9 +124,7 @@ class _OrderPageState extends State<OrderPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // -------------------------
-                // Tombol aksi
-                // -------------------------
+                // Tombol aksi (Beli Sekarang & Tambah Keranjang)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -154,60 +157,6 @@ class _OrderPageState extends State<OrderPage> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// -------------------------
-// Halaman Keranjang Baru
-// -------------------------
-class KeranjangPage extends StatelessWidget {
-  const KeranjangPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    int total = keranjang.fold(0, (sum, item) {
-      final angka = int.tryParse(item.price.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
-      return sum + angka;
-    });
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Keranjang Saya"),
-        backgroundColor: const Color.fromARGB(255, 127, 76, 59),
-      ),
-      body: keranjang.isEmpty
-          ? const Center(child: Text("Keranjang masih kosong"))
-          : ListView.builder(
-              itemCount: keranjang.length,
-              itemBuilder: (context, index) {
-                final item = keranjang[index];
-                return ListTile(
-                  leading: Icon(item.icon, color: Colors.brown),
-                  title: Text(item.name),
-                  subtitle: Text(item.price),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      keranjang.removeAt(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("${item.name} dihapus dari keranjang")),
-                      );
-                      (context as Element).markNeedsBuild();
-                    },
-                  ),
-                );
-              },
-            ),
-      bottomNavigationBar: Container(
-        color: Colors.brown.shade100,
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          "Total: Rp $total",
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
         ),
       ),
     );
