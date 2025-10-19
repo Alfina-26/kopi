@@ -9,6 +9,8 @@ import 'register_page.dart';
 import 'dashboard_page.dart';
 import 'produk_page.dart';
 import 'pembayaran_page.dart';
+import 'package:latihan1/tentang_page.dart';
+
 
 void main() {
   runApp(
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/produk': (context) => ProdukPage(),
         '/cart': (context) => const CartPage(),
         '/pembayaran': (context) => const PembayaranPage(),
+        '/about': (context) => const TentangPage(),
       },
     );
   }

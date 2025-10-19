@@ -105,7 +105,6 @@ class DashboardPage extends StatelessWidget {
                   alignment: WrapAlignment.center,
                   children: [
                     _menuButton(context, Icons.local_cafe, "Produk", '/produk'),
-                    _menuButton(context, Icons.local_offer, "Promo", '/promo'),
                     _menuButton(context, Icons.info, "Tentang Kami", '/about'),
                   ],
                 ),

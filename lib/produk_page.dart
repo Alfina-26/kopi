@@ -18,7 +18,7 @@ class ProdukPage extends StatefulWidget {
 
 class _ProdukPageState extends State<ProdukPage> {
   // Contoh user/customer
-  final Customer customer = Customer("Budi", "budi@email.com", "Jl. Mawar No. 1");
+  final Customer customer = Customer("pina", "pina29@email.com", "Jl. Mawar No. 1");
   
 
 
