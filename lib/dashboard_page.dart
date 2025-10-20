@@ -1,133 +1,121 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Ambil username dari arguments
-    final String? username = ModalRoute.of(context)?.settings.arguments as String?;
+    final String? username =
+        ModalRoute.of(context)?.settings.arguments as String?;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFFAF3E0),
       appBar: AppBar(
-        backgroundColor: Colors.brown,
-        title: const Text("Cherry Coffee"),
+        elevation: 0,
+        backgroundColor: const Color(0xFF4B2E05),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-          )
-        ],
+        title: Text(
+          "Cherry Coffee",
+          style: GoogleFonts.playfairDisplay(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/coffee_bg.jpg"),
-            fit: BoxFit.cover,
+          gradient: LinearGradient(
+            colors: [Color(0xFFFBEED7), Color(0xFFDCC5A2)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
-          child: Container(
-            width: 500,
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.brown,
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                  offset: Offset(3, 6),
-                ),
-              ],
-            ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Ganti Icon dan judul agar lebih aesthetic dan ceria
-                ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      colors: [
-                        Color(0xFFD72660), // cherry
-                        Color(0xFFFFC93C), // kuning ceria
-                        Color(0xFFB98068), // kopi brown
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ).createShader(bounds);
-                  },
-                  child: const Text(
-                    "Cherry Coffee",
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2,
-                      color: Colors.white, // Akan diwarnai oleh ShaderMask
-                      shadows: [
-                        Shadow(
-                          blurRadius: 8,
-                          color: Colors.black26,
-                          offset: Offset(2, 4),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                // Tampilkan username jika ada
-                Text(
-                  username != null && username.isNotEmpty
-                      ? "Selamat Datang, $username!"
-                      : "Selamat Datang di Cherry Coffee!",
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Nikmati aroma kopi terbaik dari biji pilihan 🍒☕",
-                  style: TextStyle(color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-
-                // Menu Navigasi
-                Wrap(
-                  spacing: 20,
-                  runSpacing: 20,
-                  alignment: WrapAlignment.center,
+                // Logo + sapaan
+                Column(
                   children: [
-                    _menuButton(context, Icons.local_cafe, "Produk", '/produk'),
-                    _menuButton(context, Icons.info, "Tentang Kami", '/about'),
+                    Image.asset(
+                      'assets/logo1.png',
+                      width: 90,
+                      height: 90,
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      "Cherry Coffee",
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF4B2E05),
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      username != null && username.isNotEmpty
+                          ? "Hai, $username 👋"
+                          : "Selamat datang ☕",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF5C4033),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      "Nikmati aroma kopi terbaik dari Cherry Coffee 🍒",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.brown.shade700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
-                const SizedBox(height: 30),
+
+                const SizedBox(height: 40),
+
+                // Menu Cards (kaca elegan)
+                Wrap(
+                  spacing: 25,
+                  runSpacing: 25,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _menuCard(context, Icons.local_cafe_rounded, "Produk", '/produk'),
+                    _menuCard(context, Icons.info_outline_rounded, "Tentang Kami", '/about'),
+                  ],
+                ),
+
+                const SizedBox(height: 45),
 
                 // Tombol Logout
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.brown,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    elevation: 6,
-                  ),
-                  icon: const Icon(Icons.logout, color: Colors.white),
-                  label: const Text(
-                    "Keluar",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/login');
                   },
+                  icon: const Icon(Icons.logout_rounded, size: 20, color: Colors.white),
+                  label: Text(
+                    "Keluar",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF6F4E37),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    elevation: 5,
+                  ),
                 ),
               ],
             ),
@@ -137,22 +125,45 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _menuButton(BuildContext context, IconData icon, String label, String route) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.brown.shade300,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+  Widget _menuCard(
+      BuildContext context, IconData icon, String title, String route) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () => Navigator.pushNamed(context, route),
+      child: Container(
+        width: 150,
+        height: 130,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF8D6E63), Color(0xFF6F4E37)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.brown.withOpacity(0.4),
+              blurRadius: 8,
+              offset: const Offset(3, 5),
+            ),
+          ],
         ),
-        elevation: 4,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 40),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
       ),
-      icon: Icon(icon, color: Colors.white),
-      label: Text(label, style: const TextStyle(color: Colors.white)),
-      onPressed: () {
-        // Navigasi ke halaman lain (buat dulu rutenya)
-        Navigator.pushNamed(context, route);
-      },
     );
   }
 }
