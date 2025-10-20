@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const DashboardPage(),
         '/produk': (context) => ProdukPage(),
         '/cart': (context) => const CartPage(),
-        '/pembayaran': (context) => const PembayaranPage(),
         '/about': (context) => const TentangPage(),
       },
+
     );
   }
 }

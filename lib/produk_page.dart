@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import '/model/produk.dart';
-import '/model/minumanspesial.dart';
-import '/model/user.dart';
-import '/order_page.dart';
-import 'data/keranjang_data.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
-import 'providers/cart_provider.dart';
-
+import '../model/produk.dart';
+import '../model/minumanspesial.dart';
+import '../model/user.dart';
+import '../providers/cart_provider.dart';
+import 'order_page.dart';
 
 class ProdukPage extends StatefulWidget {
   const ProdukPage({super.key});
@@ -17,126 +15,50 @@ class ProdukPage extends StatefulWidget {
 }
 
 class _ProdukPageState extends State<ProdukPage> {
-  // Contoh user/customer
-  final Customer customer = Customer("pina", "pina29@email.com", "Jl. Mawar No. 1");
-  
+  final Customer customer =
+      Customer("Pina", "pina29@email.com", "Jl. Mawar No. 1");
 
-
-  // List produk dan minuman spesial
   final List<Produk> menuList = [
+    // ☕ KOPI KLASIK
     Produk("Espresso", "Kopi hitam pekat khas Italia.", "Rp 18.000", Icons.coffee),
-    Produk("Latte", "Espresso dengan banyak susu.", "Rp 23.000", Icons.coffee_outlined),
     Produk("Americano", "Espresso dengan air panas.", "Rp 19.000", Icons.coffee_rounded),
-    Produk("Cappuccino", "Espresso dengan susu dan foam.", "Rp 22.000", Icons.local_cafe),
+    Produk("Latte", "Espresso dengan susu creamy dan foam tipis.", "Rp 23.000", Icons.coffee_outlined),
+    Produk("Cappuccino", "Espresso, susu, dan foam tebal di atasnya.", "Rp 22.000", Icons.local_cafe),
+    Produk("Macchiato", "Espresso dengan sedikit susu steamed.", "Rp 21.000", Icons.coffee),
+    Produk("Mocha", "Campuran espresso, cokelat, dan susu hangat.", "Rp 25.000", Icons.coffee),
     Produk("Piccolo", "Espresso dengan susu steamed dalam gelas kecil.", "Rp 20.000", Icons.coffee),
-    Produk("Ristretto", "Espresso dengan ekstraksi singkat, rasa lebih kuat.", "Rp 19.000", Icons.coffee),
-    Produk("Irish Coffee", "Kopi dengan whiskey dan krim.", "Rp 35.000", Icons.local_bar),
-    Produk("Kopi Tubruk", "Kopi khas Indonesia dengan gula.", "Rp 15.000", Icons.coffee),
-    Produk("Kopi Vietnam Drip", "Kopi robusta dengan susu kental manis.", "Rp 22.000", Icons.coffee),
-    Produk("Kopi Arabika Aceh Gayo", "Kopi arabika khas Aceh, aroma kuat.", "Rp 24.000", Icons.coffee),
-    Produk("Kopi Robusta Lampung", "Kopi robusta khas Lampung, rasa bold.", "Rp 20.000", Icons.coffee),
-    Produk("Kopi Susu Jahe", "Kopi susu dengan jahe hangat.", "Rp 21.000", Icons.local_drink),
-    Produk("Kopi Pandan", "Kopi dengan aroma pandan.", "Rp 22.000", Icons.local_cafe),
-    Produk("Kopi Aren Latte", "Latte dengan gula aren.", "Rp 23.000", Icons.coffee),
-    Produk("Kopi Susu Regal", "Kopi susu dengan biskuit regal.", "Rp 25.000", Icons.coffee),
-    Produk("Kopi Susu Alpukat", "Kopi susu dengan alpukat segar.", "Rp 27.000", Icons.coffee),
-    Produk("Kopi Susu Coklat", "Kopi susu dengan coklat.", "Rp 24.000", Icons.coffee),
-    Produk("Kopi Susu Kelapa", "Kopi susu dengan kelapa muda.", "Rp 26.000", Icons.coffee),
-    MinumanSpesial("Kopi Luwak", "Kopi eksklusif dari luwak.", "Rp 80.000", Icons.star, true),
-    MinumanSpesial("Signature Cherry Latte", "Latte dengan sirup cherry khas.", "Rp 30.000", Icons.local_cafe, true),
-    MinumanSpesial("Signature Kopi Nusantara", "Blend kopi terbaik dari seluruh Indonesia.", "Rp 35.000", Icons.coffee, true),
+    Produk("Flat White", "Espresso dengan susu lembut tanpa foam.", "Rp 24.000", Icons.local_cafe),
+    Produk("Ristretto", "Versi espresso yang lebih pekat dan kuat.", "Rp 20.000", Icons.local_drink),
+
+    // 🧊 KOPI DINGIN
+    Produk("Iced Americano", "Espresso dengan air dingin dan es batu.", "Rp 21.000", Icons.icecream),
+    Produk("Iced Latte", "Espresso dengan susu dan es batu segar.", "Rp 24.000", Icons.icecream),
+    Produk("Iced Caramel Macchiato", "Espresso, susu, dan sirup karamel.", "Rp 27.000", Icons.local_cafe_outlined),
+    Produk("Iced Mocha", "Cokelat, espresso, susu, dan es.", "Rp 28.000", Icons.coffee_rounded),
+
+    // 🍵 NON-KOPI
+    Produk("Matcha Latte", "Matcha premium dengan susu steamed.", "Rp 26.000", Icons.local_drink),
+    Produk("Red Velvet Latte", "Minuman manis lembut dengan rasa red velvet.", "Rp 25.000", Icons.favorite),
+    Produk("Chocolate Latte", "Cokelat panas pekat dan creamy.", "Rp 24.000", Icons.local_cafe),
+    Produk("Vanilla Milk", "Susu segar dengan sirup vanila alami.", "Rp 20.000", Icons.local_drink),
+    Produk("Honey Lemon Tea", "Teh lemon dengan madu alami.", "Rp 19.000", Icons.emoji_food_beverage),
+    Produk("Thai Tea", "Teh Thailand khas dengan susu kental manis.", "Rp 23.000", Icons.local_drink_outlined),
+
+    // 🍰 SNACK & DESSERT (tambahan)
+    Produk("Croissant Butter", "Croissant lembut dengan aroma mentega.", "Rp 15.000", Icons.bakery_dining),
+    Produk("Chocolate Muffin", "Muffin cokelat lembut dan manis.", "Rp 18.000", Icons.bakery_dining),
+    Produk("Cheese Cake", "Kue keju lembut dengan base graham.", "Rp 28.000", Icons.cake),
+    Produk("Cinnamon Roll", "Roti manis dengan gula kayu manis.", "Rp 20.000", Icons.bakery_dining_outlined),
+    Produk("Tiramisu Slice", "Kue kopi khas Italia, creamy dan lembut.", "Rp 30.000", Icons.cake_outlined),
+
+    // 🌟 MINUMAN SPESIAL CHERRY COFFEE
+    MinumanSpesial("Signature Cherry Latte", "Latte dengan sirup cherry khas Cherry Coffee.", "Rp 30.000", Icons.local_cafe, true),
+    MinumanSpesial("Kopi Luwak Premium", "Kopi eksklusif dari luwak pilihan terbaik.", "Rp 80.000", Icons.star, true),
+    MinumanSpesial("Cherry Cold Brew", "Cold brew dengan sirup cherry segar.", "Rp 35.000", Icons.icecream, true),
+    MinumanSpesial("Salted Caramel Cold Brew", "Cold brew dengan krim karamel asin manis.", "Rp 32.000", Icons.local_drink, true),
+    MinumanSpesial("Affogato", "Espresso dengan satu scoop es krim vanilla.", "Rp 28.000", Icons.icecream, true),
+    MinumanSpesial("Coffee Float", "Kopi dingin dengan es krim vanilla di atasnya.", "Rp 29.000", Icons.icecream, true),
   ];
-
-  void _showDetail(BuildContext context, Produk menu) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        title: Row(
-          children: [
-            Icon(menu.icon, color: Colors.brown, size: 32),
-            const SizedBox(width: 10),
-            Text(menu.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(menu.desc, style: const TextStyle(fontSize: 16)),
-            const SizedBox(height: 12),
-            Text(
-              "Harga: ${menu.price}",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.brown,
-                fontSize: 18,
-              ),
-            ),
-            if (menu is MinumanSpesial && menu.isSignature)
-              const Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Signature Menu!",
-                  style: TextStyle(
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            child: const Text("Tutup"),
-            onPressed: () => Navigator.pop(context),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final cartProvider = Provider.of<CartProvider>(context, listen: false);
-              cartProvider.addToCart(menu);
-  
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("${menu.name} ditambahkan ke keranjang!")),
-  );
-},
-  child: const Text('Tambah ke Keranjang'),
-)
-
-        ],
-      ),
-    );
-  }
-
-  void _showKeranjang(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Keranjang Belanja"),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: keranjangGlobal.isEmpty
-
-              ? const Text("Keranjang kosong.")
-              : ListView(
-                  shrinkWrap: true,
-                  children: keranjangGlobal.map((p) => ListTile(
-                    title: Text(p.name),
-                    subtitle: Text(p.desc),
-                    trailing: Text(p.price),
-                  )).toList(),
-                ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Tutup"),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,28 +66,27 @@ class _ProdukPageState extends State<ProdukPage> {
       appBar: AppBar(
         title: const Text("Menu Cherry Coffee"),
         backgroundColor: Colors.brown,
-       actions: [
-  Consumer<CartProvider>(
-    builder: (context, cart, child) {
-      return badges.Badge(
-        position: badges.BadgePosition.topEnd(top: 2, end: 4),
-        badgeContent: Text(
-          cart.items.length.toString(),
-          style: const TextStyle(color: Colors.white, fontSize: 12),
-        ),
-        showBadge: cart.items.isNotEmpty,
-        child: IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          tooltip: "Lihat Keranjang",
-          onPressed: () {
-            Navigator.pushNamed(context, '/cart');
-          },
-        ),
-      );
-    },
-  ),
-],
-
+        actions: [
+          Consumer<CartProvider>(
+            builder: (context, cart, child) {
+              return badges.Badge(
+                position: badges.BadgePosition.topEnd(top: 2, end: 4),
+                badgeContent: Text(
+                  cart.items.length.toString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                showBadge: cart.items.isNotEmpty,
+                child: IconButton(
+                  icon: const Icon(Icons.shopping_cart),
+                  tooltip: "Lihat Keranjang",
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/cart');
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       backgroundColor: Colors.brown[50],
       body: ListView.builder(
@@ -181,26 +102,25 @@ class _ProdukPageState extends State<ProdukPage> {
             ),
             child: ListTile(
               leading: Icon(menu.icon, color: Colors.brown, size: 36),
-              title: Text(menu.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(menu.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text(menu.desc),
-              trailing: Text(menu.price, style: const TextStyle(color: Colors.brown, fontWeight: FontWeight.bold)),
+              trailing: Text(
+                menu.price,
+                style: const TextStyle(
+                    color: Colors.brown, fontWeight: FontWeight.bold),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrderPage(customer: customer, produk: menu),
+                    builder: (_) => OrderPage(produk: menu),
                   ),
                 );
               },
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.brown,
-        icon: const Icon(Icons.shopping_cart),
-        label: const Text("Keranjang"),
-        onPressed: () => _showKeranjang(context),
       ),
     );
   }

@@ -10,6 +10,16 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
 
+    // Hitung total harga dari item di keranjang
+    double totalHarga = 0;
+    for (var item in cart.items) {
+      final harga = int.tryParse(
+            item.price.replaceAll(RegExp(r'[^0-9]'), ''),
+          ) ??
+          0;
+      totalHarga += harga;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Keranjang Kamu"),
@@ -21,11 +31,21 @@ class CartPage extends StatelessWidget {
               itemCount: cart.items.length,
               itemBuilder: (context, index) {
                 final item = cart.items[index];
-                return ListTile(
-                  leading: Icon(item.icon, color: Colors.brown),
-                  title: Text(item.name),
-                  subtitle: Text(item.desc),
-                  trailing: Text(item.price),
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6),
+                  child: ListTile(
+                    leading:
+                        const Icon(Icons.local_cafe, color: Colors.brown),
+                    title: Text(item.name,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold)),
+                    subtitle: Text(item.desc),
+                    trailing: Text(
+                      item.price,
+                      style: const TextStyle(color: Colors.brown),
+                    ),
+                  ),
                 );
               },
             ),
@@ -33,15 +53,66 @@ class CartPage extends StatelessWidget {
           ? null
           : Padding(
               padding: const EdgeInsets.all(12.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.brown),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PembayaranPage()),
-                  );
-                },
-                child: const Text("Lanjut ke Pembayaran 💳"),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Menampilkan total harga
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Total Pembayaran:",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Rp ${totalHarga.toStringAsFixed(0)}",
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.brown,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.brown,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Ubah data produk ke bentuk Map untuk dikirim ke halaman pembayaran
+                      final keranjang = cart.items.map((item) {
+                        final harga = int.tryParse(
+                              item.price
+                                  .replaceAll(RegExp(r'[^0-9]'), ''),
+                            ) ??
+                            0;
+                        return {
+                          'name': item.name,
+                          'price': harga,
+                        };
+                      }).toList();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PembayaranPage(
+                            keranjang: keranjang,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.payment, color: Colors.white),
+                    label: const Text(
+                      "Lanjut ke Pembayaran 💳",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
+                ],
               ),
             ),
     );
