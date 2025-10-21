@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart'; 
+import 'firebase_options.dart';
+
 import 'providers/cart_provider.dart';
 import 'cart_page.dart';
 import 'homescreen_page.dart';
@@ -11,8 +14,12 @@ import 'produk_page.dart';
 import 'pembayaran_page.dart';
 import 'package:latihan1/tentang_page.dart';
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, 
+  );
 
-void main() {
   runApp(
     MultiProvider(
       providers: [
@@ -43,7 +50,6 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartPage(),
         '/about': (context) => const TentangPage(),
       },
-
     );
   }
 }

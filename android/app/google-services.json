@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "416186771487",
+    "project_id": "alfinakopi",
+    "storage_bucket": "alfinakopi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416186771487:android:b00867838b1aded165cd2a",
+        "android_client_info": {
+          "package_name": "com.example.latihan1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkJ_TeTPg4AJegW1H4oHnvaR6_mgNR_h4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
